@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  api:
+    container_name: api
+    build: ./api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./api:/app
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/initdb:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:
